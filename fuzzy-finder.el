@@ -57,7 +57,7 @@
 (defconst fuzzy-finder--process-name "fuzzy-finder"
   "Process name for fuzzy-finder.")
 
-(defvar-local fuzzy-finder--tmp-output-file nil
+(defvar-local fuzzy-finder--output-file nil
   "File name for output of fuzzy-finder result.")
 
 (defvar-local fuzzy-finder--action nil
@@ -65,15 +65,24 @@
 
 
 
-(defsubst fuzzy-finder--get-buffer-create ()
-  "Get or create buffer for fuzzy-finder process"
-  (get-buffer-create (concat "*" fuzzy-finder--process-name "*")))
+(defsubst fuzzy-finder--get-buffer-create (&optional force-recreate)
+  "Get or create buffer for fuzzy-finder process
+
+If Optional FORCE-RECREATE is set to non-nil and buffer already exists,
+destroy it and create new buffer with same name.
+existing buffer and create "
+  (let* ((name (concat "*" fuzzy-finder--process-name "*"))
+         (buf (get-buffer name)))
+    (when (and buf
+               force-recreate)
+      (kill-buffer buf))
+    (get-buffer-create name)))
 
 (defun fuzzy-finder--display-buffer (buf height)
-  "Display fuzzy-finder BUF and set window height to  HEIGHT.
+  "Display fuzzy-finder BUF and set window height to HEIGHT.
 
 This function sets current buffer to BUF, and returns created window."
-  (let* ((new-window nil))
+  (let ((new-window nil))
     (setq new-window (split-window (frame-root-window)
                                    (- height)
                                    'below))
@@ -98,7 +107,7 @@ This function sets current buffer to BUF, and returns created window."
   (setq fuzzy-finder--window-configuration
         (current-window-configuration))
 
-  (let* ((buf (fuzzy-finder--get-buffer-create))
+  (let* ((buf (fuzzy-finder--get-buffer-create t))
          (window-height 12)
          (sh-cmd (if input-command
                   (concat input-command " | " command)
@@ -111,26 +120,24 @@ This function sets current buffer to BUF, and returns created window."
     (fuzzy-finder--display-buffer buf window-height)
 
     (cd directory)
-    (setq-local fuzzy-finder--tmp-output-file
-                output-file)
-    (setq-local fuzzy-finder--action
-                action)
-    (setq-local mode-line-format nil)
-
-    (make-term fuzzy-finder--process-name
-               "sh"
-               nil
-               "-c"
-               sh-cmd-with-redirect)
+    (setq-local fuzzy-finder--output-file output-file)
+    (setq-local fuzzy-finder--action action)
 
     (linum-mode 0)
     (visual-line-mode 0)
+    (setq-local mode-line-format nil)
     (setq-local scroll-margin 0)
     (setq-local scroll-conservatively 0)
     (setq-local term-suppress-hard-newline t)  ; for paths wider than the window
     (setq-local show-trailing-whitespace nil)
     (setq-local display-line-numbers nil)
     (face-remap-add-relative 'mode-line '(:box nil))
+
+    (make-term fuzzy-finder--process-name
+               "sh"
+               nil
+               "-c"
+               sh-cmd-with-redirect)
     (term-char-mode)
     ))
 
