@@ -1,5 +1,5 @@
-fzf-exec.el
-===========
+fuzzy-finder.el
+===============
 
 License
 -------
