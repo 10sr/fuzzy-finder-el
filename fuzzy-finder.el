@@ -71,6 +71,9 @@
 (defvar-local fuzzy-finder--action nil
   "Action function given to this fuzzy-finder session.")
 
+(defvar-local fuzzy-finder--action-extra-args nil
+  "List of extra args which will be passed to the action function.")
+
 
 
 (defsubst fuzzy-finder--get-buffer-create (&optional force-recreate)
@@ -109,18 +112,19 @@ Should be hooked to `term-handle-exit'."
   (let* ((output-file fuzzy-finder--output-file)
          (output-delimiter fuzzy-finder--output-delimiter)
          (action fuzzy-finder--action)
+         (action-extra-args fuzzy-finder--action-extra-args)
          (text (with-temp-buffer
                  (insert-file-contents output-file)
                  (buffer-substring-no-properties (point-min) (point-max))))
          (lines (split-string text output-delimiter t)))
     (delete-file output-file)
     (set-window-configuration fuzzy-finder--window-configuration)
-    (funcall action lines)))
+    (apply action lines action-extra-args)))
 (advice-add 'term-handle-exit :after
             'fuzzy-finder--after-term-handle-exit)
 
 ;;;###autoload
-(cl-defun fuzzy-finder (&key directory command input-command action output-delimiter window-height)
+(cl-defun fuzzy-finder (&key directory command input-command action output-delimiter window-height action-extra-args)
   "Invoke fzf executable and return resulting list."
   (interactive)
   (setq directory (or directory
@@ -161,6 +165,7 @@ Should be hooked to `term-handle-exit'."
     (setq-local fuzzy-finder--output-file output-file)
     (setq-local fuzzy-finder--output-delimiter output-delimiter)
     (setq-local fuzzy-finder--action action)
+    (setq-local fuzzy-finder--action-extra-args action-extra-args)
 
     (linum-mode 0)
     (visual-line-mode 0)
