@@ -74,11 +74,10 @@
 
 
 (defsubst fuzzy-finder--get-buffer-create (&optional force-recreate)
-  "Get or create buffer for fuzzy-finder process
+  "Get or create buffer for fuzzy-finder process.
 
 If Optional FORCE-RECREATE is set to non-nil and buffer already exists,
-destroy it and create new buffer with same name.
-existing buffer and create "
+destroy it and create new buffer with same name."
   (let* ((name (concat "*" fuzzy-finder--process-name "*"))
          (buf (get-buffer name)))
     (when (and buf
@@ -100,11 +99,10 @@ This function sets current buffer to BUF, and returns created window."
     (switch-to-buffer buf)
     new-window))
 
-(cl-defun fuzzy-finder--after-term-handle-exit (process-name msg)
+(cl-defun fuzzy-finder--after-term-handle-exit (&rest _)
   "Call the action function when fuzzy-finder program terminated normally.
 
-Should be hooked to `term-handle-exit'.
-PROCESS-NAME and MSG are ignored."
+Should be hooked to `term-handle-exit'."
   (unless fuzzy-finder--output-file
     (cl-return-from fuzzy-finder--after-term-handle-exit))
 
@@ -121,6 +119,7 @@ PROCESS-NAME and MSG are ignored."
 (advice-add 'term-handle-exit :after
             'fuzzy-finder--after-term-handle-exit)
 
+;;;###autoload
 (cl-defun fuzzy-finder (&key directory command input-command action output-delimiter window-height)
   "Invoke fzf executable and return resulting list."
   (interactive)
