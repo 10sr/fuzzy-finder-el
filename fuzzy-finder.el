@@ -2,7 +2,11 @@
 
 ;; Copyright (C) 2020  10sr
 
+;; Some Portions Copyright (C) 2015 Bailey Ling
+
 ;; Author: 10sr <8.slashes@gmail.com>
+;; Author: Bailey Ling
+;; Maintainer: 10sr <8.slashes@gmail.com>
 ;; Keywords: matching
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -140,6 +144,7 @@ Should be hooked to `term-handle-exit'."
   (setq window-height (or window-height
                           fuzzy-finder-default-window-height))
 
+  ;; Modified from fzf.el: https://github.com/bling/fzf.el
   (setq fuzzy-finder--window-configuration
         (current-window-configuration))
 
