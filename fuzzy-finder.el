@@ -51,6 +51,11 @@
   :type 'string
   :group 'fuzzy-finder)
 
+(defcustom fuzzy-finder-default-window-height 12
+  "Default value for `fuzzy-finder' WINDOW-HEIGHT."
+  :type 'integer
+  :group 'fuzzy-finder)
+
 (defvar fuzzy-finder--window-configuration nil
   "Window configuration before showing fuzzy-finder buffer.")
 
@@ -59,6 +64,9 @@
 
 (defvar-local fuzzy-finder--output-file nil
   "File name for output of fuzzy-finder result.")
+
+(defvar-local fuzzy-finder--output-delimiter nil
+  "Delimiter for output of fuzzy-finder result.")
 
 (defvar-local fuzzy-finder--action nil
   "Action function given to this fuzzy-finder session.")
@@ -82,7 +90,9 @@ existing buffer and create "
   "Display fuzzy-finder BUF and set window height to HEIGHT.
 
 This function sets current buffer to BUF, and returns created window."
-  (let ((new-window nil))
+  (let ((new-window nil)
+        (height (min height
+                     (/ (frame-height) 2))))
     (setq new-window (split-window (frame-root-window)
                                    (- height)
                                    'below))
@@ -90,7 +100,28 @@ This function sets current buffer to BUF, and returns created window."
     (switch-to-buffer buf)
     new-window))
 
-(cl-defun fuzzy-finder (&key directory command input-command action output-delimiter)
+(cl-defun fuzzy-finder--after-term-handle-exit (process-name msg)
+  "Call the action function when fuzzy-finder program terminated normally.
+
+Should be hooked to `term-handle-exit'.
+PROCESS-NAME and MSG are ignored."
+  (unless fuzzy-finder--output-file
+    (cl-return-from fuzzy-finder--after-term-handle-exit))
+
+  (let* ((output-file fuzzy-finder--output-file)
+         (output-delimiter fuzzy-finder--output-delimiter)
+         (action fuzzy-finder--action)
+         (text (with-temp-buffer
+                 (insert-file-contents output-file)
+                 (buffer-substring-no-properties (point-min) (point-max))))
+         (lines (split-string text output-delimiter t)))
+    (delete-file output-file)
+    (set-window-configuration fuzzy-finder--window-configuration)
+    (funcall action lines)))
+(advice-add 'term-handle-exit :after
+            'fuzzy-finder--after-term-handle-exit)
+
+(cl-defun fuzzy-finder (&key directory command input-command action output-delimiter window-height)
   "Invoke fzf executable and return resulting list."
   (interactive)
   (setq directory (or directory
@@ -103,12 +134,13 @@ This function sets current buffer to BUF, and returns created window."
                    fuzzy-finder-default-action))
   (setq output-delimiter (or output-delimiter
                              fuzzy-finder-default-output-delimiter))
+  (setq window-height (or window-height
+                          fuzzy-finder-default-window-height))
 
   (setq fuzzy-finder--window-configuration
         (current-window-configuration))
 
   (let* ((buf (fuzzy-finder--get-buffer-create t))
-         (window-height 12)
          (sh-cmd (if input-command
                   (concat input-command " | " command)
                 command))
@@ -120,7 +152,15 @@ This function sets current buffer to BUF, and returns created window."
     (fuzzy-finder--display-buffer buf window-height)
 
     (cd directory)
+    (make-term fuzzy-finder--process-name
+               "sh"
+               nil
+               "-c"
+               sh-cmd-with-redirect)
+    (term-char-mode)
+
     (setq-local fuzzy-finder--output-file output-file)
+    (setq-local fuzzy-finder--output-delimiter output-delimiter)
     (setq-local fuzzy-finder--action action)
 
     (linum-mode 0)
@@ -132,21 +172,12 @@ This function sets current buffer to BUF, and returns created window."
     (setq-local show-trailing-whitespace nil)
     (setq-local display-line-numbers nil)
     (face-remap-add-relative 'mode-line '(:box nil))
-
-    (make-term fuzzy-finder--process-name
-               "sh"
-               nil
-               "-c"
-               sh-cmd-with-redirect)
-    (term-char-mode)
     ))
-
 
 (defun fuzzy-finder-action-find-files (files)
   "Visit FILES."
   (dolist (file files)
     (find-file file)))
-
 
 ;; (format-spec "%aaa" `((?a . ,default-directory) (?b . "aaa")))
 ;; (format "%2$s %3$s" "e" "f" "g")
