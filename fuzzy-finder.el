@@ -188,9 +188,23 @@ Should be hooked to `term-handle-exit'."
   (dolist (file files)
     (find-file file)))
 
-;; (format-spec "%aaa" `((?a . ,default-directory) (?b . "aaa")))
-;; (format "%2$s %3$s" "e" "f" "g")
-;; (format "hoehoe" "eee")
+;;;###autoload
+(defun fuzzy-finder-find-files-projectile ()
+  "Execute fuzzy finder and visit resulting files.
+
+If path of root directory is available via projectile, start from that directory."
+  (interactive)
+  (let ((dir (or (ignore-errors
+                   (require 'projectile)
+                   (projectile-project-root))
+                 default-directory)))
+    (fuzzy-finder :directory dir
+                  :action-extra-args (list dir)
+                  :action (lambda (results dir)
+                            (dolist (file results)
+                              (find-file (expand-file-name file
+                                                           dir)))))))
+
 (provide 'fuzzy-finder)
 
 ;;; fuzzy-finder.el ends here
