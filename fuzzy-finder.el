@@ -122,7 +122,7 @@ Use MSG to check if fuzzy-finder process exited with code 0."
     (cl-return-from fuzzy-finder--after-term-handle-exit))
 
   (run-hooks 'fuzzy-finder-exit-hook)
-  (let* ((directory default-directory)
+  (let* ((buf (current-buffer))
          (output-file fuzzy-finder--output-file)
          (output-delimiter fuzzy-finder--output-delimiter)
          (action fuzzy-finder--action)
@@ -133,8 +133,7 @@ Use MSG to check if fuzzy-finder process exited with code 0."
     (delete-file output-file)
     (set-window-configuration fuzzy-finder--window-configuration)
     (when (string= "finished\n" msg)
-      (with-temp-buffer
-        (cd directory)
+      (with-current-buffer buf
         (funcall action lines)))))
 (advice-add 'term-handle-exit :after
             'fuzzy-finder--after-term-handle-exit)
