@@ -199,7 +199,7 @@ Use MSG to check if fuzzy-finder process exited with code 0."
 
 (defun fuzzy-finder-action-find-files (files)
   "Visit FILES."
-  (dolist (file files)
+  (dolist (file (mapcar 'expand-file-name  files))
     (find-file file)))
 
 (declare-function projectile-project-root "projectile")
