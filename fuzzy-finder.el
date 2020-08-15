@@ -66,7 +66,7 @@
   :group 'fuzzy-finder)
 
 (defcustom fuzzy-finder-exit-hook nil
-  "Hook run just before starting exit process of fuzzy-finder.."
+  "Hook run just before starting exit process of fuzzy-finder."
   :type 'hook
   :group 'fuzzy-finder)
 
@@ -116,10 +116,11 @@ This function sets current buffer to BUF, and returns created window."
     (switch-to-buffer buf)
     new-window))
 
-(cl-defun fuzzy-finder--after-term-handle-exit (&rest _)
+(cl-defun fuzzy-finder--after-term-handle-exit (_ msg)
   "Call the action function when fuzzy-finder program terminated normally.
 
-Should be hooked to `term-handle-exit'."
+Should be hooked to `term-handle-exit'.
+Use MSG to check if fuzzy-finder process exited with code 0."
   (unless fuzzy-finder--output-file
     (cl-return-from fuzzy-finder--after-term-handle-exit))
 
@@ -134,7 +135,8 @@ Should be hooked to `term-handle-exit'."
          (lines (split-string text output-delimiter t)))
     (delete-file output-file)
     (set-window-configuration fuzzy-finder--window-configuration)
-    (apply action lines action-extra-args)))
+    (when (string= "finished\n" msg)
+      (apply action lines action-extra-args))))
 (advice-add 'term-handle-exit :after
             'fuzzy-finder--after-term-handle-exit)
 
