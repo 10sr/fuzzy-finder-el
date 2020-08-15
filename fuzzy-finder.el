@@ -162,11 +162,11 @@ Use MSG to check if fuzzy-finder process exited with code 0."
   (let* ((buf (fuzzy-finder--get-buffer-create t))
          (sh-cmd (if (and input-command
                           (not (string= "" input-command)))
-                     (concat input-command " | " command)
+                     (concat input-command "|" command)
                    command))
          (output-file (make-temp-file "fzf-el-result"))
          (sh-cmd-with-redirect (concat sh-cmd
-                                       " > "
+                                       ">"
                                        (shell-quote-argument output-file))))
 
     (fuzzy-finder--display-buffer buf window-height)
