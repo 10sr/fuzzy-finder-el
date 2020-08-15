@@ -201,6 +201,8 @@ Use MSG to check if fuzzy-finder process exited with code 0."
   (dolist (file files)
     (find-file file)))
 
+(declare-function projectile-project-root "projectile")
+
 ;;;###autoload
 (defun fuzzy-finder-find-files-projectile ()
   "Execute fuzzy finder and visit resulting files.
