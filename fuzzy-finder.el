@@ -185,6 +185,8 @@ Use MSG to check if fuzzy-finder process exited with code 0."
 
     (linum-mode 0)
     (visual-line-mode 0)
+    (when (fboundp 'company-mode)
+      (company-mode 0))
     (setq-local mode-line-format nil)
     (setq-local scroll-margin 0)
     (setq-local scroll-conservatively 0)
