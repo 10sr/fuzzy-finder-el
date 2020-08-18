@@ -36,27 +36,27 @@
   :group 'convenience)
 
 (defcustom fuzzy-finder-default-command "fzf --reverse"
-  "Default value for `fuzzy-finder' COMMAND."
+  "Default value for `fuzzy-finder' COMMAND argument."
   :type 'string
   :group 'fuzzy-finder)
 
 (defcustom fuzzy-finder-default-input-command nil
-  "Default value for `fuzzy-finder' INPUT-COMMAND."
+  "Default value for `fuzzy-finder' INPUT-COMMAND argument."
   :type 'string
   :group 'fuzzy-finder)
 
 (defcustom fuzzy-finder-default-action 'fuzzy-finder-action-find-files
-  "Default value for `fuzzy-finder' ACTION."
+  "Default value for `fuzzy-finder' ACTION argument."
   :type 'function
   :group 'fuzzy-finder)
 
 (defcustom fuzzy-finder-default-output-delimiter "\n"
-  "Default value for `fuzzy-finder' OUTPUT-DELIMITER."
+  "Default value for `fuzzy-finder' OUTPUT-DELIMITER argument."
   :type 'string
   :group 'fuzzy-finder)
 
 (defcustom fuzzy-finder-default-window-height 12
-  "Default value for `fuzzy-finder' WINDOW-HEIGHT."
+  "Default value for `fuzzy-finder' WINDOW-HEIGHT argument."
   :type 'integer
   :group 'fuzzy-finder)
 
@@ -140,7 +140,39 @@ Use MSG to check if fuzzy-finder process exited with code 0."
 
 ;;;###autoload
 (cl-defun fuzzy-finder (&key directory command input-command action output-delimiter window-height)
-  "Invoke fzf executable and return resulting list."
+  "Execute fuzzy-finder application.
+
+All arguments are optional keyword arguments.
+There is a variable that defines default value of each argument except for
+DIRECTORY: for example `fuzzy-finder-default-command' is for COMMAND argument.
+
+`:directory DIRECTORY'
+    Set the directory to start fuzzy-finder application from.
+    If not given current `default-directory' will be used.
+
+`:command COMMAND'
+    Command-line string of fuzzy-finder application to execute.
+
+`:input-command INPUT-COMMAND'
+    When non-empty string is given for INPUT-COMMAND, the stdout of this
+    command result will be piped (\"|\") into COMMAND.
+    Otherwise, COMMAND will be invoked without any input, thus the application
+    default might be used (\"FZF_DEFAULT_COMMAND\" for example).
+
+`:action ACTION'
+    Callback function that results of fuzzy-finder selection will be passed to.
+
+    This function shall accept one argument RESULTS.
+    RESULTS is a list of string of fuzzy-finder selection: it will be made by
+    splitting stdout of command by OUTPUT-DELIMITER.
+
+`:output-delimiter OUTPUT-DELIMITER'
+    Regular expression to split result of COMMAND.
+    When the stdout is delimited by ASCII NUL characters, this value should be
+    \"\\0\".
+
+`:window-height WINDOW-HEIGHT'
+    Interger of height of window that displays fuzzy-finder buffer."
   (interactive)
   (setq directory (or directory
                       default-directory))
