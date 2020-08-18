@@ -29,6 +29,7 @@
 ;;; Code:
 
 (require 'cl-lib)
+(require 'nadvice)
 (require 'term)
 
 (defgroup fuzzy-finder nil
