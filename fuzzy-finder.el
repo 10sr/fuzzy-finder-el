@@ -61,20 +61,20 @@
   :group 'fuzzy-finder)
 
 (defcustom fuzzy-finder-init-hook nil
-  "Hook run just after initialize fuzzy-finder buffer."
+  "Hook run just after initialize fuzzy finder buffer."
   :type 'hook
   :group 'fuzzy-finder)
 
 (defcustom fuzzy-finder-exit-hook nil
-  "Hook run just before starting exit process of fuzzy-finder."
+  "Hook run just before starting exit process of fuzzy finder."
   :type 'hook
   :group 'fuzzy-finder)
 
 (defvar fuzzy-finder--window-configuration nil
-  "Window configuration before showing fuzzy-finder buffer.")
+  "Window configuration before showing fuzzy finder buffer.")
 
 (defconst fuzzy-finder--process-name "fuzzy-finder"
-  "Process name for fuzzy-finder.")
+  "Process name for fuzzy finder.")
 
 (defvar-local fuzzy-finder--output-file nil
   "File name for output of fuzzy-finder result.")
@@ -88,7 +88,7 @@
 
 
 (defsubst fuzzy-finder--get-buffer-create (&optional force-recreate)
-  "Get or create buffer for fuzzy-finder process.
+  "Get or create buffer for fuzzy finder process.
 
 If Optional FORCE-RECREATE is set to non-nil and buffer already exists,
 destroy it and create new buffer with same name."
@@ -100,7 +100,7 @@ destroy it and create new buffer with same name."
     (get-buffer-create name)))
 
 (defun fuzzy-finder--display-buffer (buf height)
-  "Display fuzzy-finder BUF and set window height to HEIGHT.
+  "Display fuzzy finder BUF and set window height to HEIGHT.
 
 This function sets current buffer to BUF, and returns created window."
   (let ((new-window nil)
