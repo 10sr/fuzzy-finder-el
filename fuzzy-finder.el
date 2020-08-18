@@ -142,6 +142,10 @@ Use MSG to check if fuzzy-finder process exited with code 0."
 (cl-defun fuzzy-finder (&key directory command input-command action output-delimiter window-height)
   "Execute fuzzy-finder application.
 
+This function will open a term buffer and start fuzzy-finder process using
+COMMAND argument.  After the process exits successfully call ACTION function
+with the result.
+
 All arguments are optional keyword arguments.
 There is a variable that defines default value of each argument except for
 DIRECTORY: for example `fuzzy-finder-default-command' is for COMMAND argument.
