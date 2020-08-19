@@ -1,6 +1,6 @@
 ;;; fuzzy-finder.el --- A Front-End for Fuzzy Finder Applications   -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2020  10sr
+;; Copyright (C) 2020 10sr
 
 ;; Some Portions Copyright (C) 2015 Bailey Ling
 
@@ -24,7 +24,18 @@
 
 ;;; Commentary:
 
-;; A Front-End for Fuzzy Finder Applications.
+;; A front-end for fuzzy finder applications.
+
+;; `fuzzy-finder' command will open a new window and start a fuzzy finder
+;; process inside of it, and call an action function with selected items.
+;; By default the action function is set to the function that visits given
+;; files. so you can use `fuzzy-finder' command to `find-file' existing files.
+
+;; You can customize default values used for `fuzzy-finder' execution including
+;; fuzzy finder command, input command, action function and so on.
+;; These values can also be given when calling `fuzzy-finder' as a function,
+;; which is useful when you want to define new interactive commands that using
+;; `fuzzy-finder'.
 
 ;;; Code:
 
@@ -91,7 +102,7 @@
 (defsubst fuzzy-finder--get-buffer-create (&optional force-recreate)
   "Get or create buffer for fuzzy finder process.
 
-If Optional FORCE-RECREATE is set to non-nil and buffer already exists,
+If optional FORCE-RECREATE is set to non-nil and buffer already exists,
 destroy it and create new buffer with same name."
   (let* ((name (concat "*" fuzzy-finder--process-name "*"))
          (buf (get-buffer name)))
@@ -246,7 +257,7 @@ DIRECTORY: for example `fuzzy-finder-default-command' is for COMMAND argument.
 (defun fuzzy-finder-find-files-projectile ()
   "Execute fuzzy finder and visit resulting files.
 
-If path of root directory is available via projectile, start from that directory."
+If path of root directory is available from projectile, start from that directory."
   (interactive)
   (let ((dir (or (ignore-errors
                    (require 'projectile)
