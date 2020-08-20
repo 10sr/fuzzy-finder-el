@@ -252,6 +252,29 @@ DIRECTORY: for example `fuzzy-finder-default-command' is for COMMAND argument.
   (dolist (file (mapcar 'expand-file-name  files))
     (find-file file)))
 
+(defun fuzzy-finder-action-find-files-goto-line (results)
+  "Visit files and then goto line.
+
+RESULTS should a list of strings.
+Each string should be in the form of:
+
+    FILENAME:LINENUMBER:FILE-CONTENT"
+  ;; Modified from fzf.el: https://github.com/bling/fzf.el
+  (let ((results (mapcar (lambda (result)
+                           (let* ((fields (split-string result ":"))
+                                  (file (pop fields))
+                                  (linenumber (pop fields)))
+                             (list :file (expand-file-name file)
+                                   :linenumber (and linenumber
+                                                    (string-to-number linenumber)))))
+                         results)))
+    (dolist (result results)
+      (find-file (plist-get result :file))
+      (when (plist-get result :linenumber)
+        (goto-char (point-min))
+        (forward-line (1- (plist-get result :linenumber)))
+        (back-to-indentation)))))
+
 (declare-function projectile-project-root "projectile")
 
 ;;;###autoload
@@ -264,7 +287,22 @@ If path of root directory is available from projectile, start from that director
                    (require 'projectile)
                    (projectile-project-root))
                  default-directory)))
-    (fuzzy-finder :directory dir)))
+    (fuzzy-finder :directory dir
+                  :action 'fuzzy-finder-action-find-files)))
+
+;;;###autoload
+(defun fuzzy-finder-goto-gitgrep-line ()
+  "Select line with fuzzy finder and go to selected point in a git repository.
+
+Run git grep command to generate input lines."
+  (interactive)
+  (let ((dir (or (ignore-errors
+                   (require 'projectile)
+                   (projectile-project-root))
+                 default-directory)))
+    (fuzzy-finder :directory dir
+                  :input-command "git grep -nH ^"
+                  :action 'fuzzy-finder-action-find-files-goto-line)))
 
 (provide 'fuzzy-finder)
 
