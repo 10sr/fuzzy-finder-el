@@ -281,7 +281,8 @@ Each string should be in the form of:
 (defun fuzzy-finder-find-files-projectile ()
   "Execute fuzzy finder and visit resulting files.
 
-If path of root directory is available from projectile, start from that directory."
+If projectile package is available and root directory is found, start from that
+directory."
   (interactive)
   (let ((dir (or (ignore-errors
                    (require 'projectile)

@@ -10,10 +10,10 @@ Overview
 
 `fuzzy-finder` command will open a new window and start a fuzzy finder
 process inside of it, and then call a function with selected items.
+By default it visits selected files.
 
 There are a number of applications which can be used with `fuzzy-finder`,
-including [fzf][], [peco], and [selecta][].
-By default `fzf` is set to be used.
+including [fzf][] (default), [peco], and [selecta][].
 
 
 
@@ -26,9 +26,9 @@ For most cases these frameworks is better suited than this package, for example
 selecting command for `M-x`, opening files from recentf list, or looking for
 a function help.
 
-However, this package has one big advantage which these frameworks do not have:
-you can start querying and selecting items *before* the input list has been
-completed.
+However, this package has one big advantage which these frameworks do not
+provide: you can start querying and selecting items *before* the input list has
+been completed.
 You will feel the power of this feature when you start `fuzzy-finder` in
 your home directory.
 
@@ -59,7 +59,7 @@ directory.
 
 ### `fuzzy-finder-goto-gitgrep-line`
 
-Select line with fuzzy finder and go to selected point in a git repository.
+Select lines with fuzzy finder and go to selected point in a git repository.
 
 Run git grep command to generate input lines.
 
