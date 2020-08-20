@@ -1,4 +1,4 @@
-;;; fuzzy-finder.el --- A Front-End for Fuzzy Finder Applications   -*- lexical-binding: t; -*-
+;;; fuzzy-finder.el --- Fuzzy Finder App Integration into Emacs  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2020 10sr
 
@@ -24,17 +24,18 @@
 
 ;;; Commentary:
 
-;; A front-end for fuzzy finder applications.
+;; Fuzzy finder app integration into Emacs .
 
 ;; `fuzzy-finder' command will open a new window and start a fuzzy finder
-;; process inside of it, and call an action function with selected items.
-;; By default the action function is set to the function that visits given
-;; files. so you can use `fuzzy-finder' command to `find-file' existing files.
+;; process inside of it, and then call a function with selected items.
+;; By default the function is set to the function that visits given
+;; files. so you can use `fuzzy-finder' command as a `find-file'
+;; for existing files.
 
 ;; You can customize default values used for `fuzzy-finder' execution including
 ;; fuzzy finder command, input command, action function and so on.
 ;; These values can also be given when calling `fuzzy-finder' as a function,
-;; which is useful when you want to define new interactive commands that using
+;; which is useful when you want to define new interactive commands that uses
 ;; `fuzzy-finder'.
 
 ;;; Code:
@@ -156,10 +157,10 @@ Use MSG to check if fuzzy-finder process exited with code 0."
 
 This function will open a term buffer and start fuzzy-finder process using
 COMMAND argument.  After the process exits successfully call ACTION function
-with the result.
+with selected items.
 
 All arguments are optional keyword arguments.
-There is a variable that defines default value of each argument except for
+There is a variable that defines default value for each argument except for
 DIRECTORY: for example `fuzzy-finder-default-command' is for COMMAND argument.
 
 `:directory DIRECTORY'
