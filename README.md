@@ -3,12 +3,13 @@ fuzzy-finder.el
 
 Fuzzy Finder App Integration into Emacs
 
+![cap](cap.gif)
 
 
 Overview
 --------
 
-`fuzzy-finder` command will open a new window and start a fuzzy finder
+`fuzzy-finder` command opens a new window and start a fuzzy finder
 process inside of it, and then call a function with selected items.
 By default it visits selected files.
 
@@ -43,6 +44,9 @@ Open a new window and start a fuzzy finder process inside of it.
 This package defines several variables that configures this command:
 for example `fuzzy-finder-default-command` defines what command is executed
 for fuzzy finder process.
+
+Without any configuration, it lists up all files in the current directory and
+child directories, start a `fzf` process, and then visit selected files.
 
 This command can also be used as a function to define a new fuzzy finder command.
 You can pass keyword arguments to overwrite configurations defined by the
