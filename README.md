@@ -3,7 +3,7 @@ fuzzy-finder.el
 
 Fuzzy Finder App Integration into Emacs
 
-![cap](cap2.gif)
+![cap](cap4.gif)
 
 
 Overview
