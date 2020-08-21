@@ -48,7 +48,7 @@
   "A Front-End for Fuzzy Finder Applications."
   :group 'convenience)
 
-(defcustom fuzzy-finder-default-command "fzf --reverse"
+(defcustom fuzzy-finder-default-command "fzf --multi --reverse"
   "Default value for `fuzzy-finder' COMMAND argument."
   :type 'string
   :group 'fuzzy-finder)
