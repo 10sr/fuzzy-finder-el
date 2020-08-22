@@ -56,7 +56,7 @@
   :type 'string
   :group 'fuzzy-finder)
 
-(defcustom fuzzy-finder-default-action 'fuzzy-finder-action-find-files
+(defcustom fuzzy-finder-default-action #'fuzzy-finder-action-find-files
   "Default value for `fuzzy-finder' ACTION argument."
   :type 'function
   :group 'fuzzy-finder)
@@ -146,8 +146,9 @@ Use MSG to check if fuzzy-finder process exited with code 0."
     (when (string= "finished\n" msg)
       (with-current-buffer buf
         (funcall action lines)))))
-(advice-add 'term-handle-exit :after
-            'fuzzy-finder--after-term-handle-exit)
+(advice-add #'term-handle-exit
+            :after
+            #'fuzzy-finder--after-term-handle-exit)
 
 ;;;###autoload
 (cl-defun fuzzy-finder (&key directory command input-command action output-delimiter window-height)
@@ -245,7 +246,7 @@ DIRECTORY: for example `fuzzy-finder-default-command' is for COMMAND argument.
 
 (defun fuzzy-finder-action-find-files (files)
   "Visit FILES."
-  (dolist (file (mapcar 'expand-file-name  files))
+  (dolist (file (mapcar #'expand-file-name  files))
     (find-file file)))
 
 (defun fuzzy-finder-action-find-files-goto-line (results)
@@ -285,7 +286,7 @@ directory."
                    (projectile-project-root))
                  default-directory)))
     (fuzzy-finder :directory dir
-                  :action 'fuzzy-finder-action-find-files)))
+                  :action #'fuzzy-finder-action-find-files)))
 
 ;;;###autoload
 (defun fuzzy-finder-goto-gitgrep-line ()
@@ -299,7 +300,7 @@ Run git grep command to generate input lines."
                  default-directory)))
     (fuzzy-finder :directory dir
                   :input-command "git grep -nH ^"
-                  :action 'fuzzy-finder-action-find-files-goto-line)))
+                  :action #'fuzzy-finder-action-find-files-goto-line)))
 
 (provide 'fuzzy-finder)
 
