@@ -1,4 +1,4 @@
-;;; fuzzy-finder.el --- Fuzzy Finder App Integration into Emacs  -*- lexical-binding: t; -*-
+;;; fuzzy-finder.el --- Fuzzy Finder App Integration  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2020 10sr
 
@@ -8,6 +8,9 @@
 ;; Author: Bailey Ling
 ;; Maintainer: 10sr <8.slashes@gmail.com>
 ;; Keywords: matching
+;; URL: https://github.com/10sr/fuzzy-finder-el
+;; Version: 0.0.1
+;; Package-Requires: ((emacs "24.4"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
