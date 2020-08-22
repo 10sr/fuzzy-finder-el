@@ -26,13 +26,11 @@
 
 ;; Fuzzy finder app integration into Emacs .
 
-;; `fuzzy-finder' command will open a new window and start a fuzzy finder
-;; process inside of it, and then call a function with selected items.
-;; By default the function is set to the function that visits given
-;; files. so you can use `fuzzy-finder' command as a `find-file'
-;; for existing files.
+;; `fuzzy-finder' command opens a new window, starts a fuzzy finder
+;; process inside of it, and then calls a function with selected items.
+;; By default it visits selected files.
 
-;; You can customize default values used for `fuzzy-finder' execution including
+;; You can customize default values used for `fuzzy-finder' execution:
 ;; fuzzy finder command, input command, action function and so on.
 ;; These values can also be given when calling `fuzzy-finder' as a function,
 ;; which is useful when you want to define new interactive commands that uses
@@ -155,9 +153,8 @@ Use MSG to check if fuzzy-finder process exited with code 0."
 (cl-defun fuzzy-finder (&key directory command input-command action output-delimiter window-height)
   "Execute fuzzy-finder application.
 
-This function will open a term buffer and start fuzzy-finder process using
-COMMAND argument.  After the process exits successfully call ACTION function
-with selected items.
+Open a term buffer and start fuzzy-finder process using COMMAND argument.
+After the process exits successfully call ACTION function with selected items.
 
 All arguments are optional keyword arguments.
 There is a variable that defines default value for each argument except for
