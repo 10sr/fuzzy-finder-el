@@ -27,7 +27,7 @@
 
 ;;; Commentary:
 
-;; Fuzzy finder app integration into Emacs .
+;; Fuzzy finder app integration into Emacs.
 
 ;; `fuzzy-finder' command opens a new window, starts a fuzzy finder
 ;; process inside of it, and then calls a function with selected items.
