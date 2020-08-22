@@ -241,8 +241,7 @@ DIRECTORY: for example `fuzzy-finder-default-command' is for COMMAND argument.
     (setq-local display-line-numbers nil)
     (face-remap-add-relative 'mode-line '(:box nil))
 
-    (run-hooks 'fuzzy-finder-init-hook)
-    ))
+    (run-hooks 'fuzzy-finder-init-hook)))
 
 (defun fuzzy-finder-action-find-files (files)
   "Visit FILES."
