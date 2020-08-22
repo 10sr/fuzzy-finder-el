@@ -235,7 +235,7 @@ DIRECTORY: for example `fuzzy-finder-default-command' is for COMMAND argument.
 
     (linum-mode 0)
     (visual-line-mode 0)
-    (when (fboundp 'company-mode)
+    (when (fboundp #'company-mode)
       (company-mode 0))
     (setq-local mode-line-format nil)
     (setq-local scroll-margin 0)
@@ -258,7 +258,7 @@ DIRECTORY: for example `fuzzy-finder-default-command' is for COMMAND argument.
 RESULTS should a list of strings.
 Each string should be in the form of:
 
-    FILENAME:LINENUMBER:FILE-CONTENT"
+    FILENAME:LINENUMBER:CONTENT"
   ;; Modified from fzf.el: https://github.com/bling/fzf.el
   (let ((results (mapcar (lambda (result)
                            (let* ((fields (split-string result ":"))
