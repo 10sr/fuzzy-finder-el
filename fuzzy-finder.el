@@ -156,7 +156,12 @@ Use MSG to check if fuzzy-finder process exited with code 0."
             #'fuzzy-finder--after-term-handle-exit)
 
 ;;;###autoload
-(cl-defun fuzzy-finder (&key directory command input-command action output-delimiter window-height)
+(cl-defun fuzzy-finder (&key (directory default-directory)
+                             (command fuzzy-finder-default-command)
+                             (input-command fuzzy-finder-default-input-command)
+                             (action fuzzy-finder-default-action)
+                             (output-delimiter fuzzy-finder-default-output-delimiter)
+                             (window-height fuzzy-finder-default-window-height))
   "Execute fuzzy-finder application.
 
 Open a term buffer and start fuzzy-finder process using COMMAND argument.
@@ -194,19 +199,6 @@ DIRECTORY: for example `fuzzy-finder-default-command' is for COMMAND argument.
 `:window-height WINDOW-HEIGHT'
     Interger of height of window that displays fuzzy-finder buffer."
   (interactive)
-  (setq directory (or directory
-                      default-directory))
-  (setq command (or command
-                    fuzzy-finder-default-command))
-  (setq input-command (or input-command
-                          fuzzy-finder-default-input-command))
-  (setq action (or action
-                   fuzzy-finder-default-action))
-  (setq output-delimiter (or output-delimiter
-                             fuzzy-finder-default-output-delimiter))
-  (setq window-height (or window-height
-                          fuzzy-finder-default-window-height))
-
   ;; Modified from fzf.el: https://github.com/bling/fzf.el
   (setq fuzzy-finder--window-configuration
         (current-window-configuration))
