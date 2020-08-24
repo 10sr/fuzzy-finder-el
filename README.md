@@ -13,8 +13,8 @@ Overview
 process inside of it, and then calls a function with selected items.
 By default it visits selected files.
 
-There are a number of applications which can be used with `fuzzy-finder`,
-including [fzf][] (default), [peco], and [selecta][].
+There are a number of applications which can be used with `fuzzy-finder`
+such as [fzf][] (default), [peco], and [selecta][].
 
 
 
@@ -24,8 +24,8 @@ Compared to Other Selector Frameworks (like Helm, Ivy...)
 There are several Emacs frameworks for selecting items that purely (or mostly)
 implemented in Emacs-Lisp.
 For most cases these frameworks is better suited than this package, for example
-selecting command for `M-x`, opening files from recentf list, or looking for
-a function help.
+when selecting command for `M-x`, opening files from recentf list, or looking
+for a function help.
 
 However, this package has one big advantage which these frameworks do not
 provide: you can start querying and selecting items *before* the input list has

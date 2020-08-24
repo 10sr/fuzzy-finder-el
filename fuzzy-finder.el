@@ -1,4 +1,4 @@
-;;; fuzzy-finder.el --- Fuzzy Finder App Integration into Emacs  -*- lexical-binding: t; -*-
+;;; fuzzy-finder.el --- Fuzzy Finder App Integration  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2020 10sr
 
@@ -8,6 +8,9 @@
 ;; Author: Bailey Ling
 ;; Maintainer: 10sr <8.slashes@gmail.com>
 ;; Keywords: matching
+;; URL: https://github.com/10sr/fuzzy-finder-el
+;; Version: 0.0.1
+;; Package-Requires: ((emacs "24.4"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -24,15 +27,13 @@
 
 ;;; Commentary:
 
-;; Fuzzy finder app integration into Emacs .
+;; Fuzzy finder app integration into Emacs.
 
-;; `fuzzy-finder' command will open a new window and start a fuzzy finder
-;; process inside of it, and then call a function with selected items.
-;; By default the function is set to the function that visits given
-;; files. so you can use `fuzzy-finder' command as a `find-file'
-;; for existing files.
+;; `fuzzy-finder' command opens a new window, starts a fuzzy finder
+;; process inside of it, and then calls a function with selected items.
+;; By default it visits selected files.
 
-;; You can customize default values used for `fuzzy-finder' execution including
+;; You can customize default values used for `fuzzy-finder' execution:
 ;; fuzzy finder command, input command, action function and so on.
 ;; These values can also be given when calling `fuzzy-finder' as a function,
 ;; which is useful when you want to define new interactive commands that uses
@@ -58,7 +59,7 @@
   :type 'string
   :group 'fuzzy-finder)
 
-(defcustom fuzzy-finder-default-action 'fuzzy-finder-action-find-files
+(defcustom fuzzy-finder-default-action #'fuzzy-finder-action-find-files
   "Default value for `fuzzy-finder' ACTION argument."
   :type 'function
   :group 'fuzzy-finder)
@@ -148,16 +149,16 @@ Use MSG to check if fuzzy-finder process exited with code 0."
     (when (string= "finished\n" msg)
       (with-current-buffer buf
         (funcall action lines)))))
-(advice-add 'term-handle-exit :after
-            'fuzzy-finder--after-term-handle-exit)
+(advice-add #'term-handle-exit
+            :after
+            #'fuzzy-finder--after-term-handle-exit)
 
 ;;;###autoload
 (cl-defun fuzzy-finder (&key directory command input-command action output-delimiter window-height)
   "Execute fuzzy-finder application.
 
-This function will open a term buffer and start fuzzy-finder process using
-COMMAND argument.  After the process exits successfully call ACTION function
-with selected items.
+Open a term buffer and start fuzzy-finder process using COMMAND argument.
+After the process exits successfully call ACTION function with selected items.
 
 All arguments are optional keyword arguments.
 There is a variable that defines default value for each argument except for
@@ -234,7 +235,7 @@ DIRECTORY: for example `fuzzy-finder-default-command' is for COMMAND argument.
 
     (linum-mode 0)
     (visual-line-mode 0)
-    (when (fboundp 'company-mode)
+    (when (fboundp #'company-mode)
       (company-mode 0))
     (setq-local mode-line-format nil)
     (setq-local scroll-margin 0)
@@ -244,12 +245,11 @@ DIRECTORY: for example `fuzzy-finder-default-command' is for COMMAND argument.
     (setq-local display-line-numbers nil)
     (face-remap-add-relative 'mode-line '(:box nil))
 
-    (run-hooks 'fuzzy-finder-init-hook)
-    ))
+    (run-hooks 'fuzzy-finder-init-hook)))
 
 (defun fuzzy-finder-action-find-files (files)
   "Visit FILES."
-  (dolist (file (mapcar 'expand-file-name  files))
+  (dolist (file (mapcar #'expand-file-name  files))
     (find-file file)))
 
 (defun fuzzy-finder-action-find-files-goto-line (results)
@@ -258,7 +258,7 @@ DIRECTORY: for example `fuzzy-finder-default-command' is for COMMAND argument.
 RESULTS should a list of strings.
 Each string should be in the form of:
 
-    FILENAME:LINENUMBER:FILE-CONTENT"
+    FILENAME:LINENUMBER:CONTENT"
   ;; Modified from fzf.el: https://github.com/bling/fzf.el
   (let ((results (mapcar (lambda (result)
                            (let* ((fields (split-string result ":"))
@@ -289,7 +289,7 @@ directory."
                    (projectile-project-root))
                  default-directory)))
     (fuzzy-finder :directory dir
-                  :action 'fuzzy-finder-action-find-files)))
+                  :action #'fuzzy-finder-action-find-files)))
 
 ;;;###autoload
 (defun fuzzy-finder-goto-gitgrep-line ()
@@ -303,7 +303,7 @@ Run git grep command to generate input lines."
                  default-directory)))
     (fuzzy-finder :directory dir
                   :input-command "git grep -nH ^"
-                  :action 'fuzzy-finder-action-find-files-goto-line)))
+                  :action #'fuzzy-finder-action-find-files-goto-line)))
 
 (provide 'fuzzy-finder)
 
