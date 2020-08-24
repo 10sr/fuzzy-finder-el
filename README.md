@@ -1,7 +1,7 @@
 fuzzy-finder.el
 ===============
 
-Fuzzy Finder App Integration into Emacs
+Fuzzy Finder App Integration for Emacs
 
 ![cap](cap.gif)
 
@@ -9,8 +9,8 @@ Fuzzy Finder App Integration into Emacs
 Overview
 --------
 
-`fuzzy-finder` command opens a new window, starts a fuzzy finder
-process inside of it, and then calls a function with selected items.
+The `fuzzy-finder` command opens a new window, starts a fuzzy finder
+process inside of it, and then calls a function on the selected items.
 By default it visits selected files.
 
 There are a number of applications which can be used with `fuzzy-finder`
@@ -23,9 +23,9 @@ Compared to Other Selector Frameworks (like Helm, Ivy...)
 
 There are several Emacs frameworks for selecting items that purely (or mostly)
 implemented in Emacs-Lisp.
-For most cases these frameworks is better suited than this package, for example
-when selecting command for `M-x`, opening files from recentf list, or looking
-for a function help.
+For most cases these frameworks are better suited than this package.
+For example, when selecting command for `M-x`, opening files from the recentf
+list, or looking for a function's help.
 
 However, this package has one big advantage which these frameworks do not
 provide: you can start querying and selecting items *before* the input list has
@@ -41,25 +41,21 @@ Available Commands
 ### `fuzzy-finder`
 
 Open a new window and start a fuzzy finder process inside of it.
-This package defines several variables that configures this command:
-for example `fuzzy-finder-default-arguments` defines what arguments are passed
+This package defines several variables which configure this command:
+for example `fuzzy-finder-default-arguments` defines the arguments passed
 to the fuzzy finder process.
 
-Without any configuration, it lists up all files in the current directory and
-child directories, start a `fzf` process, and then visit selected files.
+By default, it recursively lists the current directory, starts a `fzf` process, and visits selected files.
 
 This command can also be used as a function to define a new fuzzy finder command.
-You can pass keyword arguments to overwrite configurations defined by the
-variables.
+You can pass keyword arguments to overwrite the defaults.
 
 
 ### `fuzzy-finder-find-files-projectile`
 
 Execute fuzzy finder and visit resulting files.
 
-If projectile package is available and root directory is found, start from that
-directory.
-
+If the projectile package is available, start from the project root directory.
 
 ### `fuzzy-finder-goto-gitgrep-line`
 
