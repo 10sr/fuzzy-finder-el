@@ -45,6 +45,8 @@
 (require 'nadvice)
 (require 'term)
 
+(declare-function company-mode "company")
+
 (defgroup fuzzy-finder nil
   "A Front-End for Fuzzy Finder Applications."
   :group 'convenience)
