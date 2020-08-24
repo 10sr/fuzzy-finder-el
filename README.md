@@ -76,5 +76,5 @@ See `LICENSE` for details.
 
 
 [fzf]: https://github.com/junegunn/fzf
-[peco]: https://github.com/lestrrat/peco
+[peco]: https://github.com/peco/peco
 [selecta]: https://github.com/garybernhardt/selecta
