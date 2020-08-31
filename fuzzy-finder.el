@@ -31,7 +31,7 @@
 
 ;; `fuzzy-finder' command opens a new window, starts a fuzzy finder
 ;; process inside of it, and then calls a function with selected items.
-;; By default it visits selected files.
+;; By default it uses fzf and visits selected files.
 
 ;; You can customize default values used for `fuzzy-finder' execution:
 ;; fuzzy finder command, input command, action function and so on.
@@ -205,7 +205,7 @@ DIRECTORY. For example, `fuzzy-finder-default-arguments' for the ARGUMENTS key.
     Interger height of window that displays fuzzy-finder buffer."
   (interactive)
   (unless fuzzy-finder-executable
-    (user-error "fuzzy-finder-executable \"%s\" not found"
+    (user-error "Fuzzy-finder-executable \"%s\" not found"
                 fuzzy-finder-executable))
   ;; Modified from fzf.el: https://github.com/bling/fzf.el
   (setq fuzzy-finder--window-configuration
