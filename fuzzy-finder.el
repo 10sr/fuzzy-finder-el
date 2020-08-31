@@ -162,7 +162,7 @@ Use MSG to check if fuzzy-finder process exited with code 0."
 
 ;;;###autoload
 (cl-defun fuzzy-finder (&key (directory default-directory)
-                             (command fuzzy-finder-default-command)
+                             (arguments fuzzy-finder-default-arguments)
                              (input-command fuzzy-finder-default-input-command)
                              (action fuzzy-finder-default-action)
                              (output-delimiter fuzzy-finder-default-output-delimiter)
@@ -212,6 +212,9 @@ DIRECTORY. For example, `fuzzy-finder-default-arguments' for the ARGUMENTS key.
         (current-window-configuration))
 
   (let* ((buf (fuzzy-finder--get-buffer-create t))
+         (command (concat fuzzy-finder-executable
+                          " "
+                          arguments))
          (sh-cmd (if (and input-command
                           (not (string= "" input-command)))
                      (concat input-command "|" command)
