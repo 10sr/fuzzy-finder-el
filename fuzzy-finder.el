@@ -31,7 +31,10 @@
 
 ;; `fuzzy-finder' command opens a new window, starts a fuzzy finder
 ;; process inside of it, and then calls a function with selected items.
-;; By default it uses fzf and visits selected files.
+;; By default it visits selected files.
+
+;; There are a number of applications which can be used with `fuzzy-finder'
+;; such as fzf (default), peco, and selecta.
 
 ;; You can customize default values used for `fuzzy-finder' execution:
 ;; fuzzy finder command, input command, action function and so on.
