@@ -9,8 +9,8 @@ Fuzzy Finder App Integration for Emacs
 Overview
 --------
 
-The `fuzzy-finder` command opens a new window, starts a fuzzy finder
-process inside of it, and then calls a function on the selected items.
+The `fuzzy-finder` command starts a fuzzy finder process and calls a function
+on the selected items.
 By default it visits selected files.
 
 There are a number of applications which can be used with `fuzzy-finder`
