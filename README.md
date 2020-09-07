@@ -1,3 +1,6 @@
+[![MELPA](https://melpa.org/packages/fuzzy-finder-badge.svg)](https://melpa.org/#/fuzzy-finder)
+
+
 fuzzy-finder.el
 ===============
 
