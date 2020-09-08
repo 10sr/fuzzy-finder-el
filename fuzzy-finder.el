@@ -54,8 +54,8 @@
   "Fuzzy finder app integration for Emacs."
   :group 'convenience)
 
-(defcustom fuzzy-finder-executable (executable-find "fzf")
-  "Path to the fuzzy finder executable."
+(defcustom fuzzy-finder-executable "fzf"
+  "Name or path of the fuzzy finder executable."
   :type 'string
   :group 'fuzzy-finder)
 
@@ -206,7 +206,7 @@ DIRECTORY. For example, `fuzzy-finder-default-arguments' for the ARGUMENTS key.
 `:window-height WINDOW-HEIGHT'
     Interger height of window that displays fuzzy-finder buffer."
   (interactive)
-  (unless fuzzy-finder-executable
+  (unless (executable-find fuzzy-finder-executable)
     (user-error "Fuzzy-finder-executable \"%s\" not found"
                 fuzzy-finder-executable))
   ;; Modified from fzf.el: https://github.com/bling/fzf.el
