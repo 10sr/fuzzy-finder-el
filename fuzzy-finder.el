@@ -252,7 +252,26 @@ DIRECTORY. For example, `fuzzy-finder-default-arguments' for the ARGUMENTS key.
     (setq-local display-line-numbers nil)
     (face-remap-add-relative 'mode-line '(:box nil))
 
+    (fuzzy-finder-mode 1)
     (run-hooks 'fuzzy-finder-init-hook)))
+
+(defun fuzzy-finder-abort ()
+  "Abort current fuzzy finder process."
+  (interactive)
+  (let ((buf (fuzzy-finder--get-buffer-create)))
+    (when buf
+      (interrupt-process buf))))
+
+(defvar fuzzy-finder-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "C-g") 'fuzzy-finder-abort)
+    map)
+  "Keymap for `fuzzy-finder-mode'.")
+
+(define-minor-mode fuzzy-finder-mode
+  "Minor-mode for `fuzzy-finder' buffer.
+
+The main purpose of this minor-mode is to define some keybindings.")
 
 (defun fuzzy-finder-action-find-files (files)
   "Visit FILES."
