@@ -138,6 +138,29 @@ This function sets current buffer to BUF, and returns created window."
     (switch-to-buffer buf)
     new-window))
 
+(defun fuzzy-finder--command (executable arguments input-command output-file)
+  "Construct command line string for fuzzy finder process.
+
+EXECUTABLE should be a name of path of fuzzy finder and it will be invoked with
+ARGUMENTS.
+If INPUT-COMMAND is non-nil and not a empty string, the output will be piped
+into the fuzzy finder process.
+OUTPUT-FILE is a temporary file that selection results will be stored."
+  ;; TODO: Support windows
+  (cl-assert executable)
+  (cl-assert arguments)
+  (cl-assert output-file)
+  (format "%s%s %s>%s"
+          (if (and input-command
+                   (not (string= input-command
+                                 "")))
+              (concat input-command "|")
+            "")
+          (shell-quote-argument executable)
+          arguments
+          (shell-quote-argument output-file)))
+;; (fuzzy-finder--command "fz f" "--reverse" "find ." "/a b/tmp.out")
+
 (cl-defun fuzzy-finder--after-term-handle-exit (&rest _)
   "Call the action function when fuzzy-finder program terminated normally.
 
@@ -215,17 +238,11 @@ DIRECTORY. For example, `fuzzy-finder-default-arguments' for the ARGUMENTS key.
         (current-window-configuration))
 
   (let* ((buf (fuzzy-finder--get-buffer-create t))
-         (command (concat fuzzy-finder-executable
-                          " "
-                          arguments))
-         (sh-cmd (if (and input-command
-                          (not (string= "" input-command)))
-                     (concat input-command "|" command)
-                   command))
          (output-file (make-temp-file "fzf-el-result"))
-         (sh-cmd-with-redirect (concat sh-cmd
-                                       ">"
-                                       (shell-quote-argument output-file))))
+         (command (fuzzy-finder--command fuzzy-finder-executable
+                                         arguments
+                                         input-command
+                                         output-file)))
 
     (fuzzy-finder--display-buffer buf window-height)
 
@@ -234,7 +251,7 @@ DIRECTORY. For example, `fuzzy-finder-default-arguments' for the ARGUMENTS key.
                shell-file-name
                nil
                shell-command-switch
-               sh-cmd-with-redirect)
+               command)
     (term-char-mode)
 
     (setq-local fuzzy-finder--output-file output-file)
