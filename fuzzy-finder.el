@@ -47,6 +47,7 @@
 (require 'cl-lib)
 (require 'nadvice)
 (require 'term)
+(require 'simple)
 
 (declare-function company-mode "company")
 
@@ -230,9 +231,9 @@ DIRECTORY. For example, `fuzzy-finder-default-arguments' for the ARGUMENTS key.
 
     (cd directory)
     (make-term fuzzy-finder--process-name
-               "sh"
+               shell-file-name
                nil
-               "-c"
+               shell-command-switch
                sh-cmd-with-redirect)
     (term-char-mode)
 
