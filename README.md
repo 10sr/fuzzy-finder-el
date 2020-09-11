@@ -68,6 +68,17 @@ Select lines with fuzzy finder and go to selected point in a git repository.
 Run git grep command to generate input lines.
 
 
+Limitation
+----------
+
+Currently this package does not work on Windows `cmd.exe` environment,
+because current `term.el` library does not support running commands with
+`cmd.exe`.
+We sincerely welcome your
+[contributions](https://github.com/10sr/fuzzy-finder-el/pulls) for this!
+
+
+
 License
 -------
 
