@@ -259,8 +259,10 @@ DIRECTORY.  For example, `fuzzy-finder-default-arguments' for the ARGUMENTS key.
     (setq-local fuzzy-finder--output-delimiter output-delimiter)
     (setq-local fuzzy-finder--action action)
 
-    (linum-mode 0)
-    (visual-line-mode 0)
+    (when (fboundp #'linum-mode)
+      (linum-mode 0))
+    (when (fboundp #'visual-line-mode)
+      (visual-line-mode 0))
     (when (fboundp #'company-mode)
       (company-mode 0))
     (setq-local mode-line-format nil)
