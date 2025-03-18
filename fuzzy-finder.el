@@ -9,7 +9,7 @@
 ;; Maintainer: 10sr <8.slashes@gmail.com>
 ;; Keywords: matching
 ;; URL: https://github.com/10sr/fuzzy-finder-el
-;; Version: 0.0.1
+;; Version: 0.0.2
 ;; Package-Requires: ((emacs "24.4"))
 
 ;; This program is free software; you can redistribute it and/or modify
